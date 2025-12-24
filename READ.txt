@@ -46,8 +46,8 @@ Restart terminal after setting variables.
 3. Project Setup
 ---------------------------------------------------------------------------------------------------------------------------------------
 Clone the repository:
-git clone <your-repo-url>
-cd <project-folder>
+gh repo clone AbdallaAyman98/Floward-Minimal-POC
+cd Floward-Minimal-POC
 
 Install dependencies:
 npm install
@@ -149,5 +149,6 @@ You need to configure actual devices, emulators, test data, and environment vari
 All page objects, generators, and models are provided as a starting point for extending automation.
 
 Not all workflows are implemented 
+
 
 For parallel testing, is implemented through WDIO capabilities and maxInstances.
