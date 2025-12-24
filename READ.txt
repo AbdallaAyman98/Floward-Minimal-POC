@@ -1,0 +1,153 @@
+Floward Mobile Automation
+---------------------------------------------------------------------------------------------------------------------------------------
+1. Prerequisites
+---------------------------------------------------------------------------------------------------------------------------------------
+Before running the tests, ensure the following are installed:
+
+Node.js & npm
+Install Node.js (v18+ recommended) from https://nodejs.org
+
+Check versions: node -v and npm -v
+
+Java Development Kit (JDK 8+)
+Required for Android SDK and Appium
+Check version: java -version
+
+Android SDK & Emulator
+Install Android Studio.
+Ensure ANDROID_HOME is set (see Environment Variables section)
+
+Appium
+Install globally via npm: npm install -g appium
+Check version: appium -v
+
+---------------------------------------------------------------------------------------------------------------------------------------
+2. Environment Variables
+---------------------------------------------------------------------------------------------------------------------------------------
+macOS / Linux (~/.bashrc or ~/.zshrc)
+Set the following:
+ANDROID_HOME=$HOME/Library/Android/sdk
+PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
+JAVA_HOME=$(/usr/libexec/java_home)
+DEVICE_NAME=Pixel_5_API_33
+PLATFORM_VERSION=13.0
+
+
+Windows
+Set system environment variables:
+ANDROID_HOME = C:\Users\<YourUser>\AppData\Local\Android\Sdk
+PATH = %ANDROID_HOME%\emulator;%ANDROID_HOME%\tools;%ANDROID_HOME%\tools\bin;%ANDROID_HOME%\platform-tools;%PATH%
+JAVA_HOME = C:\Program Files\Java\jdk-<version>
+DEVICE_NAME = Pixel_5_API_33
+PLATFORM_VERSION = 13.0
+
+Restart terminal after setting variables.
+---------------------------------------------------------------------------------------------------------------------------------------
+3. Project Setup
+---------------------------------------------------------------------------------------------------------------------------------------
+Clone the repository:
+git clone <your-repo-url>
+cd <project-folder>
+
+Install dependencies:
+npm install
+
+Verify installation:
+ls node_modules
+---------------------------------------------------------------------------------------------------------------------------------------
+4. Appium Configuration
+---------------------------------------------------------------------------------------------------------------------------------------
+Start Appium server: appium
+Default port: 4723
+Verify server: http://localhost:4723/wd/hub/status
+
+Ensure emulator/device is connected: adb devices
+To get the device name run: adb devices --> get the current running device name and add it to capabilities json in wdio.conf.ts
+---------------------------------------------------------------------------------------------------------------------------------------
+5. Running the Tests
+---------------------------------------------------------------------------------------------------------------------------------------
+Make sure the emulator or device is running.
+
+Run all tests: npx wdio run wdio.conf.ts
+
+Run specific test suite (e.g., login tests):
+npx wdio run wdio.conf.ts --spec ./tests/login/*.spec.ts
+
+Optional: generate Allure report:
+npx allure generate allure-results --clean -o allure-report
+npx allure open allure-report
+---------------------------------------------------------------------------------------------------------------------------------------
+6. Folder Structure
+---------------------------------------------------------------------------------------------------------------------------------------
+/project-root
+├─ /data
+│  ├─ /generators      # UserPersona / Faker generators
+│  ├─ /models          # UserModel
+│  └─ /hub             # Test data (Excel / JSON)
+├─ /page-objects
+│  ├─ base-page.ts
+│  ├─ login-page.ts
+│  ├─ login-or-create-account-page.ts
+│  ├─ my-account-page.ts
+│  ├─ catalogue-page.ts
+│  ├─ cart-page.ts
+│  └─ welcome-page.ts
+├─ /resources
+│  └─ floward-app.apk --> If app.package and app.activity are provided, the APK is unnecessary.
+├─ /features
+│  └─ *.feature
+├─ /utils
+├─ /step-definitions
+├─ wdio.conf.ts
+├─ package.json
+└─ README.md
+---------------------------------------------------------------------------------------------------------------------------------------
+7. Test Data
+---------------------------------------------------------------------------------------------------------------------------------------
+Generated using user-gen.ts.
+
+Provides realistic, randomized user data (names, emails, phones, addresses) for testing flows.
+
+Supports multiple countries and locale-specific formats.
+
+Static / Valid Users:
+
+Stored in /data/hub/valid-users.xlsx.
+
+Used for scenarios that require predefined, known-good test accounts.
+
+Can integrate generated or static users seamlessly into the test framework.
+
+Framework Scalability:
+
+Depending on the test strategy, test data can come from databases, JSON, CSV, or Excel.
+
+Scalable frameworks often use snapshots of real production data with masking for sensitive fields.
+---------------------------------------------------------------------------------------------------------------------------------------
+8. Notes / Tips
+---------------------------------------------------------------------------------------------------------------------------------------
+Always ensure emulator/device is online.
+
+Use consistent Android SDK and JDK versions.
+
+Use appium --log-level info to debug selectors or gestures.
+
+Excel integration can use xlsx or exceljs to read test users.
+
+UserPersona + UserModel enable fully data-driven test flows.
+---------------------------------------------------------------------------------------------------------------------------------------
+10. Important Notes
+---------------------------------------------------------------------------------------------------------------------------------------
+This framework is not fully functional out-of-the-box.
+
+It serves as a boilerplate for a fully scalable framework.
+
+Intended for integration with real QA environments, the SUT (System Under Test), data hubs, and configuration architecture.
+
+You need to configure actual devices, emulators, test data, and environment variables to make it fully operational.
+
+All page objects, generators, and models are provided as a starting point for extending automation.
+
+Not all workflows are implemented 
+
+For parallel testing, is implemented through WDIO capabilities and maxInstances.
